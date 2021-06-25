@@ -27,6 +27,16 @@ locals {
     if replace( sd.name , layer, "") != sd.name ]
   }
 
+  routetable_ids = {
+    for layer in var.subnets:
+    layer => [
+      for sd in local.subnet_data: 
+        aws_route_table.routers[sd.name].id
+    if replace( sd.name , layer, "") != sd.name ]
+  }
+
+
+
 
 
 /* may need to review or modify */
