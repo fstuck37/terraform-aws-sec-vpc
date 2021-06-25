@@ -27,6 +27,14 @@ locals {
     if replace( sd.name , layer, "") != sd.name ]
   }
 
+  subnet_cidrs = {
+    for layer in var.subnets:
+    layer => [
+      for sd in local.subnet_data: 
+        aws_subnet.subnets[sd.name].cidr_block
+    if replace( sd.name , layer, "") != sd.name ]
+  }
+
   routetable_ids = {
     for layer in var.subnets:
     layer => [
