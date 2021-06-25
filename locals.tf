@@ -3,6 +3,11 @@ data "aws_availability_zones" "azs" {
 }
 
 locals {
+  emptymaps = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+  resource_list = ["aws_vpc", "aws_vpn_gateway", "aws_subnet", "aws_network_acl", "aws_internet_gateway", "aws_egress_only_internet_gateway", "aws_cloudwatch_log_group", "aws_vpc_dhcp_options", "aws_route_table", "aws_route53_resolver_endpoint"]
+  empty-resource-tags = zipmap(local.resource_list, slice(local.emptymaps, 0 ,length(local.resource_list)))
+  resource-tags = merge(local.empty-resource-tags, var.resource-tags)
+
   subnet_data = flatten([
   for i, az in data.aws_availability_zones.azs.names : [
     for ii, sn in var.subnets : {
@@ -13,9 +18,6 @@ locals {
       subnet  = cidrsubnet(var.vpc-cidrs[0], (26-element(split("/", var.vpc-cidrs[0]),1)), (i*length(var.subnets))+ii )
     }]
   ])
-
-
-
 
 
 
@@ -33,21 +35,7 @@ locals {
   ])
  
  
-  num-availbility-zones = "${length(var.zones[var.region])}"
-  subnet-order = coalescelist( var.subnet-order, keys(var.subnets))
-
-  /* NOTE: Requires that pub is first */
-  pub-subnet-ids = slice(aws_subnet.subnets.*.id, 0, local.num-availbility-zones)
-
-  emptymaps = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
-  empty-subnet-tags = zipmap(local.subnet-order, slice(local.emptymaps, 0 ,length(local.subnet-order)))
-  subnet-tags = merge(local.empty-subnet-tags,var.subnet-tags)
-  
-  resource_list = ["aws_vpc", "aws_vpn_gateway", "aws_subnet", "aws_network_acl", "aws_internet_gateway", "aws_egress_only_internet_gateway", "aws_cloudwatch_log_group", "aws_vpc_dhcp_options", "aws_route_table", "aws_route53_resolver_endpoint"]
-  empty-resource-tags = zipmap(local.resource_list, slice(local.emptymaps, 0 ,length(local.resource_list)))
-  resource-tags = merge(local.empty-resource-tags, var.resource-tags)
-
-  route53-zones = split(",", join(",", data.template_file.subnet-24s-lists.*.rendered))
+ route53-zones = split(",", join(",", data.template_file.subnet-24s-lists.*.rendered))
 
 }
 

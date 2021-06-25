@@ -6,7 +6,6 @@ resource "aws_subnet" "subnets" {
   tags              = merge(
     var.tags, 
     map("Name", each.value.name ),
-    local.subnet-tags["${element(local.subnet-order,local.subnets-list[count.index])}"],
     local.resource-tags["aws_subnet"]
   )
 }
