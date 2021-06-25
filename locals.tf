@@ -15,7 +15,6 @@ locals {
       sn      = sn
       name = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
       index   = "${(i*length(var.subnets))+ii}"
-      #subnet  = cidrsubnet( var.vpc-cidrs[0] , (var.subnet_size-element(split("/", var.vpc-cidrs[0]),1)) , (i*length(var.subnets))+ii )
     }]
   ])
 
