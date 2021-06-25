@@ -19,6 +19,14 @@ locals {
     }]
   ])
 
+  subnet_ids = {
+    for layer in var.subnets:
+    layer => [
+      for sd in local.subnet_data: 
+        aws_subnet.subnets[sd.name]
+    if replace( sd.name , layer, "") != sd.name ]
+  }
+
 
 
 /* may need to review or modify */
