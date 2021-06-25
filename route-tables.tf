@@ -10,8 +10,8 @@ resource "aws_route_table" "routers" {
 
 resource "aws_route_table_association" "associations" {
   for_each = {for i in local.subnet_data:i.name=>i}
-  subnet_id      = aws_subnet.subnets.[each.key].id
-  route_table_id = aws_route_table.routers.[each.key].id
+  subnet_id      = aws_subnet.subnets[each.key].id
+  route_table_id = aws_route_table.routers[each.key].id
 }
 
 
