@@ -104,6 +104,11 @@ variable "subnets" {
   default = ["ngw", "fwt", "tgw", "gwe", "mgt"]
 }
 
+variable "subnet_size" {
+  description = "Optional : The size of each of the subnets in each availability zone. The default is 26."
+  default = 26
+}
+
 			variable "fixed-subnets" {
 			  type = map(list(string))
 			  description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
