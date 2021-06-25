@@ -244,12 +244,12 @@ variable "subnet_size" {
 	/* VPC Flow Logs */
 	variable "enable_flowlog" {
 	  description = "Optional : A boolean flag to enable/disable VPC flowlogs."
-	  default     = false
+	  default     = true
 	}
 
-	variable "aws_lambda_function_name" {
-	  description = "Optional : Lambda function name to call when sending to logs to an external SEIM."
-	  default = "none"
+	variable "flowlog_destination_arn" {
+	  description = "Optional : The ARN of the destination resource for flowlog subscription"
+	  default     = "none"
 	}
 
 	variable "flow_log_filter" {
