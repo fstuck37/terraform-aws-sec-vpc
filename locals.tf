@@ -35,6 +35,6 @@ locals {
  
  
  route53-zones = split(",", join(",", data.template_file.subnet-24s-lists.*.rendered))
-
+*/
 }
 
