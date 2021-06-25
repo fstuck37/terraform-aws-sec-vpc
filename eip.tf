@@ -1,5 +1,5 @@
 resource "aws_eip" "eip" {
-  for_each = data.aws_availability_zones.azs.names
+  for_each = toset(data.aws_availability_zones.azs.names)
   vpc = true
 }
 
