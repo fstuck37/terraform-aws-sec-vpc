@@ -1,7 +1,7 @@
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "txgw_attachment" {
   for_each = {for i in local.subnet_data:i.name=>i
-              if replace(i, "tgw", "") != i
+              if replace( tostring(i), "tgw", "") != i
   }
   subnet_ids              = aws_subnet.subnets[each.key].id
   transit_gateway_id      = var.transit_gateway_id
