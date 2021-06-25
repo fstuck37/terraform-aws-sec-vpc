@@ -101,7 +101,7 @@ variable "instance_tenancy" {
 variable "subnets" {
   type = list(string)
   description = "Optional : List of subnet identifiers for each of the subnet 5 layers that are required."
-  default = ["ngw", "fwt", "tgw", "gwe", "mgt"]
+  default = ["ngw", "fwt", "tgw", "gwe", "mgt","X"]
 }
 
 variable "subnet_size" {
