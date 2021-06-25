@@ -23,7 +23,7 @@ resource "aws_vpc" "main_vpc" {
 }
 
 resource "aws_vpc_ipv4_cidr_block_association" "secondary_cidrs" {
-  for_each   = length(var.vpc-cidrs)> 1 ? slice(var.vpc-cidrs, 1, length(var.vpc-cidrs)-1) : {}
+  for_each   = length(var.vpc-cidrs)> 1 ? toset(slice(var.vpc-cidrs, 1, length(var.vpc-cidrs)-1)) : toset([])
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = each.value
 }
