@@ -21,7 +21,7 @@ locals {
 
 
 /* may need to review or modify */
-
+/*
   txgw_routes = flatten([
   for rt in var.transit_gateway_routes : [
     for rtid in aws_route_table.privrt : {
