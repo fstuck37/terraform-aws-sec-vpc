@@ -23,7 +23,7 @@ locals {
     for layer in var.subnets:
     layer => [
       for sd in local.subnet_data: 
-        aws_subnet.subnets[sd.name]
+        aws_subnet.subnets[sd.name].id
     if replace( sd.name , layer, "") != sd.name ]
   }
 
