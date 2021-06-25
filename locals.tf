@@ -13,7 +13,7 @@ locals {
     for ii, sn in var.subnets : {
       az      = az
       sn      = sn
-      name = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
+      name    = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
       index   = "${(i*length(var.subnets))+ii}"
     }]
   ])
