@@ -22,17 +22,3 @@ resource "aws_route" "ngw-default-route" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_egress_only_internet_gateway.eg-inet-gw.id
 }
-
-
-/*
-resource "aws_route" "privrt-gateway" {
-  count                  = !contains(keys(var.subnets), "pub")  || !var.deploy_natgateways || var.dx_bgp_default_route ? 0 : local.num-availbility-zones
-  route_table_id         = aws_route_table.privrt.*.id[count.index]
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.natgw.*.id[count.index]
-}
-
-aws_egress_only_internet_gateway.eg-inet-gw.id
-
-
-*/
