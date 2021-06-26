@@ -88,22 +88,24 @@ variable "transit_gateway_id" {
 	default     = false
 }
 
+variable "transit_gateway_routes" {
+	type = list(string)
+	description = "Optional : specify the networks to route to the Transit Gateway"
+	default     = []
+}
+
+variable "enable_flowlog" {
+	description = "Optional : A boolean flag to enable/disable VPC flowlogs."
+	default     = true
+}
+
 /*
 	variable "appliance_mode_support" {
 	  description = "(Optional) Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
 	  default     = "disable"
 	}
 
-	variable "transit_gateway_routes" {
-	  type = list(string)
-	  description = "Optional : specify the networks to route to the Transit Gateway"
-	  default     = []
-	}
 
-	variable "enable_flowlog" {
-	  description = "Optional : A boolean flag to enable/disable VPC flowlogs."
-	  default     = true
-	}
 
 	variable "flowlog_destination_arn" {
 	  description = "Optional : The ARN of the destination resource for flowlog subscription"
