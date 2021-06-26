@@ -9,22 +9,26 @@ locals {
   resource-tags = merge(local.empty-resource-tags, var.resource-tags)
 
   subnet_data = flatten([
-  for i, az in data.aws_availability_zones.azs.names : [
-    for ii, sn in var.subnets : {
-      az      = az
-      sn      = sn
-      name    = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
-      index   = "${(i*length(var.subnets))+ii}"
-      subnet  = cidrsubnet( var.vpc-cidrs[0] , (var.subnet_size - element(split("/", var.vpc-cidrs[0]),1)) , (( i * length(var.subnets)) + ii) )
-    }]
-  ])
+    for i, sn in var.subnets : [
+      for ii, az in data.aws_availability_zones.azs.names : {
+        az           = az
+        layer        = sn
+        name         = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
+        index        = "${(i*length(data.aws_availability_zones.azs.names))+ii}"
+        layer_index  = i
+        subnet_index = ii
+        layer_cidr = cidrsubnet(var.vpc-cidrs[0], ceil(log(length(data.aws_availability_zones.azs.names)+ var.az_growth,2)), i )
+        subnet_cidr = cidrsubnet(cidrsubnet(var.vpc-cidrs[0], ceil(log(length(data.aws_availability_zones.azs.names)+ var.az_growth,2)), i ) , (var.subnet_size - (element(split("/", var.vpc-cidrs[0]),1) + ceil(log(length(data.aws_availability_zones.azs.names)+ var.az_growth,2)))) , ii )
+        subnet = cidrsubnet(cidrsubnet(var.vpc-cidrs[0], ceil(log(length(data.aws_availability_zones.azs.names)+ var.az_growth,2)), i ) , (var.subnet_size - (element(split("/", var.vpc-cidrs[0]),1) + ceil(log(length(data.aws_availability_zones.azs.names)+ var.az_growth,2)))) , ii )
+      }]
+    ])
 
   subnet_ids = {
     for layer in var.subnets:
     layer => [
       for sd in local.subnet_data: 
         aws_subnet.subnets[sd.name].id
-    if replace( sd.name , layer, "") != sd.name ]
+    if sd.layer == layer ]
   }
 
   subnet_cidrs = {
@@ -32,7 +36,7 @@ locals {
     layer => [
       for sd in local.subnet_data: 
         aws_subnet.subnets[sd.name].cidr_block
-    if replace( sd.name , layer, "") != sd.name ]
+    if sd.layer == layer ]
   }
 
   routetable_ids = {
@@ -40,7 +44,7 @@ locals {
     layer => [
       for sd in local.subnet_data: 
         aws_route_table.routers[sd.name].id
-    if replace( sd.name , layer, "") != sd.name ]
+    if sd.layer == layer ]
   }
 
 
