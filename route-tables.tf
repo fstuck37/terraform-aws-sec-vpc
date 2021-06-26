@@ -19,7 +19,7 @@ resource "aws_route" "ngw-default-route" {
   for_each               = {for i in local.routetable_ids["ngw"]:i=>i}
   route_table_id         = each.value
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id         = resource aws_egress_only_internet_gateway.eg-inet-gw.id
+  gateway_id             = aws_egress_only_internet_gateway.eg-inet-gw.id
 }
 
 
