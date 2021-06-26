@@ -42,7 +42,7 @@ locals {
     for layer in var.subnets:
     layer => [
       for sd in local.subnet_data:
-        id = aws_route_table.routers[sd.name].id
+        aws_route_table.routers[sd.name].id
     if sd.layer == layer ]
   }
 }
