@@ -15,6 +15,3 @@ resource "aws_route" "txgw-routes" {
   destination_cidr_block = each.value.route
   transit_gateway_id     = var.transit_gateway_id
 }
-
-
-/* local.tgw_routes[az] */
