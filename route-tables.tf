@@ -14,14 +14,15 @@ resource "aws_route_table_association" "associations" {
   route_table_id = aws_route_table.routers[each.key].id
 }
 
-/*
+
 resource "aws_route" "ngw-default-route" {
-  for_each = toset(data.aws_availability_zones.azs.names)
-  route_table_id         = each.value
+  for_each = {for sd in local.subnet_data:sd.name=>sd
+           if sd.name == "ngw" }
+  route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_egress_only_internet_gateway.eg-inet-gw.id
 }
-*/
+
 
 /*
 resource "aws_route" "privrt-gateway" {
