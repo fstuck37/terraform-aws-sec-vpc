@@ -99,6 +99,22 @@ variable "enable_flowlog" {
 	default     = true
 }
 
+variable "flowlog_destination_arn" {
+	description = "Optional : The ARN of the destination resource for flowlog subscription"
+	default     = "none"
+}
+
+variable "flow_log_filter" {
+	description = "CloudWatch subscription filter to match flow logs."
+	default = "[version, account, eni, source, destination, srcport, destport, protocol, packets, bytes, windowstart, windowend, action, flowlogstatus]"
+}
+
+variable "cloudwatch_retention_in_days" {
+	description = "Optional : Number of days to keep logs within the cloudwatch log_group. The default is 7 days."
+	default = "7"
+}
+
+
 /*
 	variable "appliance_mode_support" {
 	  description = "(Optional) Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
@@ -107,20 +123,6 @@ variable "enable_flowlog" {
 
 
 
-	variable "flowlog_destination_arn" {
-	  description = "Optional : The ARN of the destination resource for flowlog subscription"
-	  default     = "none"
-	}
-
-	variable "flow_log_filter" {
-	  description = "CloudWatch subscription filter to match flow logs."
-	  default = "[version, account, eni, source, destination, srcport, destport, protocol, packets, bytes, windowstart, windowend, action, flowlogstatus]"
-	}
-
-	variable "cloudwatch_retention_in_days" {
-	  description = "Optional : Number of days to keep logs within the cloudwatch log_group. The default is 7 days."
-	  default = "7"
-	}
 
 	variable "amazonaws-com" {
 	  description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
