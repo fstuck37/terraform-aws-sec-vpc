@@ -10,7 +10,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "txgw_attachment" {
 
 
 resource "aws_route" "txgw-routes" {
-  for_each = {for rt in local.tgw_routes:i.index=>i}
+  for_each = {for rt in local.tgw_routes:rt.index=>rt}
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = each.value.route
   transit_gateway_id     = var.transit_gateway_id
