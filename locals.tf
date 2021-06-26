@@ -45,25 +45,3 @@ locals {
         aws_route_table.routers[sd.name].id
     if sd.layer == layer ]
   }
-
-
-
-
-
-/* may need to review or modify */
-/*
-  txgw_routes = flatten([
-  for rt in var.transit_gateway_routes : [
-    for rtid in aws_route_table.privrt : {
-      name        = "${rtid.id}-${rt}"
-      route       = rt
-      route_table = rtid.id
-      }
-    if var.transit_gateway_id != false]
-  ])
- 
- 
- route53-zones = split(",", join(",", data.template_file.subnet-24s-lists.*.rendered))
-*/
-}
-
