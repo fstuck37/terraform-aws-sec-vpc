@@ -49,11 +49,11 @@ locals {
   tgw_routes = flatten([
     for rt in aws_route_table.routers : [
       for r in var.transit_gateway_routes : {
-        name  = rt.name
+        name  = rt.tags["Name"]
         route = r
-        index = "${rt.name}-${r}"
+        index = "${rt.tags["Name"]}-${r}"
      }
-    if replace(rt.name, "tgw", "") != rt.name  ]
+    if replace(rt.tags["Name"], "tgw", "") != rt.name  ]
   ])
 
 
