@@ -119,17 +119,13 @@ variable "appliance_mode_support" {
 	default     = "disable"
 }
 
+variable "amazonaws-com" {
+	description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
+	default = "amazonaws.com"
+}
+
 
 /*
-
-
-
-
-	variable "amazonaws-com" {
-	  description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
-	  default = "amazonaws.com"
-	}
-
 
 			variable "vpn_connections" {
 			  type = map(map(string))
