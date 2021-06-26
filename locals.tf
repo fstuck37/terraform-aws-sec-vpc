@@ -53,7 +53,7 @@ locals {
         route = r
         index = "${rt.tags["Name"]}-${r}"
      }
-    if replace(rt.tags["Name"], "tgw", "") != rt.name  ]
+    if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
   ])
 
 
