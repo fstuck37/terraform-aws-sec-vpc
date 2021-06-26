@@ -45,5 +45,17 @@ locals {
         aws_route_table.routers[sd.name].id
     if sd.layer == layer ]
   }
+
+  tgw_routes = flatten([
+    for rt in var.aws_route_table_ids : [
+      for r in var.transit_gateway_routes : {
+        name  = rt.name
+        route = r
+        index = "${rt.name}-${r}"
+     }
+    if replace(rt.name, "tgw", "") != rt.name  ]
+  ])
+
+
 }
 
