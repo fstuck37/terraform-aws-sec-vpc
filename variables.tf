@@ -109,6 +109,11 @@ variable "subnet_size" {
   default = 26
 }
 
+variable "az_growth" {
+   description = "Optional : The number of extra availability zones to add to the calculation for subnet sizes. This allows for AZ growth without redeployment. The default is 1."
+   default = 1
+}
+
 /*
 			variable "fixed-subnets" {
 			  type = map(list(string))
