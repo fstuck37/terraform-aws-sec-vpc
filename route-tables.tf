@@ -22,3 +22,14 @@ resource "aws_route" "ngw-default-route" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.inet-gw.id
 }
+
+resource "aws_route" "txgw-routes" {
+  for_each = {for rt in local.tgw_routes:rt.index=>rt}
+  route_table_id         = aws_route_table.routers[each.value.name].id
+  destination_cidr_block = each.value.route
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+/* TGW - 0.0.0.0/0 to vpce-091e4393533fb072f */
+
+/* mgt - 0.0.0.00 to igw-0c4351df562d0689c ?????? */
