@@ -20,5 +20,5 @@ resource "aws_route" "ngw-default-route" {
            if sd.layer == "ngw" }
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_egress_only_internet_gateway.eg-inet-gw.id
+  gateway_id             = aws_internet_gateway.inet-gw.id
 }

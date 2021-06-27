@@ -64,7 +64,7 @@ variable "az_growth" {
 }
 
 variable "domain_name" {
-	description = "Optional : DNS search domains for DHCP Options"
+	description = "Optional : DNS search domains for DHCP Options. You can use <VPCID> in the text which will be repalced by the VPC ID."
 	default = "ec2.internal"
 }
 
