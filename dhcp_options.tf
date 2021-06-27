@@ -12,7 +12,7 @@
 
 resource "aws_vpc_dhcp_options" "dhcp-opt" {
   domain_name          = var.domain_name
-  domain_name_servers  = var.domain_name_servers
+  domain_name_servers  = repalce(var.domain_name_servers, "<VPCID>", aws_vpc.main_vpc.id)
   ntp_servers          = var.ntp_servers
   tags = merge(
     var.tags,
