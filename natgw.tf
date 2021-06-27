@@ -4,4 +4,7 @@ resource "aws_nat_gateway" "natgw" {
            if sd.layer == "ngw" }
   allocation_id  = aws_eip.eip[each.value.az].id
   subnet_id      = aws_subnet.subnets[each.value.name].id
+  tags = {
+    Name = each.value.name
+  }
 }
