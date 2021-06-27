@@ -55,5 +55,5 @@ resource "aws_route" "mgt-routes" {
            if sd.layer == "mgt" }
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"gwe","ngw")].id
+  nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"mgt","ngw")].id
 }
