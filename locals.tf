@@ -32,18 +32,18 @@ locals {
 
   subnet_cidrs = {
     for layer in var.subnets:
-    layer => distinct([
-      for sd in local.subnet_data: 
-        sd.layer_cidr
-    if sd.layer == layer ])
-  }
-
-  subnet_layer_cidrs = {
-    for layer in var.subnets:
     layer => [
       for sd in local.subnet_data: 
         aws_subnet.subnets[sd.name].cidr_block
     if sd.layer == layer ]
+  }
+
+  subnet_layer_cidrs = {
+    for layer in var.subnets:
+    layer => distinct([
+      for sd in local.subnet_data: 
+        sd.layer_cidr
+    if sd.layer == layer ])[0]
   }
 
   routetable_ids = {

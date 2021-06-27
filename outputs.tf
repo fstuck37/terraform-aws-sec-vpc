@@ -15,7 +15,7 @@ output "subnet_cidrs" {
 
 output "subnet_layer_cidrs" {
   description = "Map with keys based on the subnet names and values of subnet IDs"
-  value = local.subnet_cidrs
+  value = local.subnet_layer_cidrs
 }
 
 output "routetable_ids" {
