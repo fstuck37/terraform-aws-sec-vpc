@@ -30,6 +30,19 @@ resource "aws_route" "txgw-routes" {
   transit_gateway_id     = var.transit_gateway_id
 }
 
+resource "aws_route" "txgwegw-routes" {
+  for_each = {for sd in local.subnet_data:sd.name=>sd
+           if sd.layer == "gwe" }
+  route_table_id         = aws_route_table.routers[each.value.name].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"gwe","ngw")].id
+}
+
+
+
+/* GWE - 0.0.0.0/0 to NAT GW */
+
+
 /* TGW - 0.0.0.0/0 to vpce-091e4393533fb072f */
 
 /* mgt - 0.0.0.00 to igw-0c4351df562d0689c ?????? */
