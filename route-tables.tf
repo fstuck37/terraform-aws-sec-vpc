@@ -31,17 +31,15 @@ resource "aws_route" "txgw-routes" {
   transit_gateway_id     = var.transit_gateway_id
 }
 
-/*
-need to change to look through TGW route tables
 
 resource "aws_route" "txgw-routes-ep" {
-  for_each = {for rt in local.tgw_routes:rt.index=>rt
-           if var.aws_vpc_endpoint_id != "none"}
+  for_each = {for sd in local.subnet_data:sd.name=>sd
+           if sd.layer == "tgw" }
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = var.aws_vpc_endpoint_id
 }
-*/
+
 
 /* Routes for GWE Layer */
 resource "aws_route" "txgwegw-routes" {
