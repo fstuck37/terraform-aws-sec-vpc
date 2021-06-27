@@ -31,7 +31,6 @@ resource "aws_route" "txgw-routes" {
   transit_gateway_id     = var.transit_gateway_id
 }
 
-
 resource "aws_route" "txgw-routes-ep" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "tgw" &&  var.aws_vpc_endpoint_id != [] }
@@ -39,7 +38,6 @@ resource "aws_route" "txgw-routes-ep" {
   destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = var.aws_vpc_endpoint_id[each.value.subnet_index]
 }
-
 
 /* Routes for GWE Layer */
 resource "aws_route" "txgwegw-routes" {
