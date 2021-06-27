@@ -33,11 +33,11 @@ resource "aws_route" "txgw-routes" {
 
 
 resource "aws_route" "txgw-routes-ep" {
-  for_each = {for sd in local.subnet_data:sd.name=>sd
-           if sd.layer == "tgw" &&  var.aws_vpc_endpoint_id != "none" }
+  for_each = {for i, sd in local.subnet_data:sd.name=>sd
+           if sd.layer == "tgw" &&  var.aws_vpc_endpoint_id != [] }
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id        = var.aws_vpc_endpoint_id
+  vpc_endpoint_id        = var.aws_vpc_endpoint_id[i]
 }
 
 

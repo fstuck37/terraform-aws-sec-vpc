@@ -126,6 +126,6 @@ variable "amazonaws-com" {
 
 
 variable "aws_vpc_endpoint_id" {
-	description = "Optional : The aws_vpc_endpoint ID to the Firewall Endpoint"
-	default = "none"
+	description = "Optional : TheList of aws_vpc_endpoint IDs to the Firewall Endpoint"
+	default = []
 }
