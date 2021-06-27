@@ -50,13 +50,10 @@ resource "aws_route" "txgwegw-routes" {
 }
 
 /* Routes for MGT Layer */
-resource "aws_route" "txgwegw-routes" {
+resource "aws_route" "mgt-routes" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "mgt" }
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"gwe","ngw")].id
 }
-
-/* Routes for FWT Layer */
-/* ???????????? */
