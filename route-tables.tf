@@ -14,6 +14,7 @@ resource "aws_route_table_association" "associations" {
   route_table_id = aws_route_table.routers[each.key].id
 }
 
+/* Routes for NGW Layer */
 resource "aws_route" "ngw-default-route" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "ngw" }
@@ -22,13 +23,16 @@ resource "aws_route" "ngw-default-route" {
   gateway_id             = aws_internet_gateway.inet-gw.id
 }
 
+/* Routes for TGW Layer */
 resource "aws_route" "txgw-routes" {
   for_each = {for rt in local.tgw_routes:rt.index=>rt}
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = each.value.route
   transit_gateway_id     = var.transit_gateway_id
 }
+/* TGW - 0.0.0.0/0 to vpce-091e4393533fb072f */
 
+/* Routes for GWE Layer */
 resource "aws_route" "txgwegw-routes" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "gwe" }
@@ -37,6 +41,8 @@ resource "aws_route" "txgwegw-routes" {
   nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"gwe","ngw")].id
 }
 
-/* TGW - 0.0.0.0/0 to vpce-091e4393533fb072f */
-
+/* Routes for MGT Layer */
 /* mgt - 0.0.0.00 to igw-0c4351df562d0689c ?????? */
+
+/* Routes for FWT Layer */
+/* ???????????? */
