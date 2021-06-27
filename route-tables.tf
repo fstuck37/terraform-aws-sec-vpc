@@ -14,7 +14,6 @@ resource "aws_route_table_association" "associations" {
   route_table_id = aws_route_table.routers[each.key].id
 }
 
-
 resource "aws_route" "ngw-default-route" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "ngw" }
@@ -37,11 +36,6 @@ resource "aws_route" "txgwegw-routes" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"gwe","ngw")].id
 }
-
-
-
-/* GWE - 0.0.0.0/0 to NAT GW */
-
 
 /* TGW - 0.0.0.0/0 to vpce-091e4393533fb072f */
 
