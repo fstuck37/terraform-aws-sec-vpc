@@ -11,8 +11,8 @@
 ##################################################
 
 resource "aws_vpc_dhcp_options" "dhcp-opt" {
-  domain_name          = var.domain_name
-  domain_name_servers  = replace(var.domain_name_servers, "<VPCID>", aws_vpc.main_vpc.id)
+  domain_name          = replace(var.domain_name, "<VPCID>", aws_vpc.main_vpc.id)
+  domain_name_servers  = var.domain_name_servers
   ntp_servers          = var.ntp_servers
   tags = merge(
     var.tags,
