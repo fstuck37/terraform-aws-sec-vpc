@@ -123,3 +123,9 @@ variable "amazonaws-com" {
 	description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
 	default = "amazonaws.com"
 }
+
+
+variable "aws_vpc_endpoint_id" {
+	description = "Optional : The aws_vpc_endpoint ID to the Firewall Endpoint"
+	default = "none"
+}

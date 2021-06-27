@@ -30,7 +30,14 @@ resource "aws_route" "txgw-routes" {
   destination_cidr_block = each.value.route
   transit_gateway_id     = var.transit_gateway_id
 }
-/* TGW - 0.0.0.0/0 to vpce-091e4393533fb072f */
+
+resource "aws_route" "txgw-routes-ep" {
+  for_each = {for rt in local.tgw_routes:rt.index=>rt
+           if var.aws_vpc_endpoint_id != "none"}
+  route_table_id         = aws_route_table.routers[each.value.name].id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id        = var.aws_vpc_endpoint_id
+}
 
 /* Routes for GWE Layer */
 resource "aws_route" "txgwegw-routes" {
