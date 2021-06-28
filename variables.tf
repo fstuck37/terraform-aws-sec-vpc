@@ -58,9 +58,9 @@ variable "subnet_size" {
   default = 26
 }
 
-variable "az_growth" {
-   description = "Optional : The number of extra availability zones to add to the calculation for subnet sizes. This allows for AZ growth without redeployment. The default is 1."
-   default = 1
+variable "max_azs" {
+   description = "Optional : The number of availability zones to compute the IP allocations for. This must be greater than the existing numnber of AZs in the region. The default is 8"
+   default = 8
 }
 
 variable "domain_name" {
