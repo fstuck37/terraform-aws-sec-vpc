@@ -41,7 +41,7 @@ resource "aws_route" "txgw-routes-ep" {
 }
 
 /* Routes for GWE Layer */
-resource "aws_route" "txgwegw-routes" {
+resource "aws_route" "gwe-routes" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "gwe" }
   route_table_id         = aws_route_table.routers[each.value.name].id
