@@ -103,7 +103,7 @@ resource "aws_autoscaling_group" "firewall_asg" {
 //  dynamic launch_template {
 //    for_each = toset(data.aws_availability_zones.azs.names)
     launch_template {
-      id      = aws_launch_template.firewall_launch_template[launch_template.value].id
+      id      = aws_launch_template.firewall_launch_template.id
       version = "$Latest"
     }
 //  }
