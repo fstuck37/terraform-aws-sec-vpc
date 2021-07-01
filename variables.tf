@@ -2,6 +2,26 @@ variable "region" {
   type = string
   description = "Required : The AWS Region to deploy the VPC to"
 }
+variable "ami_id" {
+  type = string
+  description = "Required : The AMI Id to be used for the Firewall/Security Appliance."
+}
+
+variable "instance_type" {
+  type = string
+  description = "Required : The Instance Type to be used for the Firewall/Security Appliance."
+}
+
+variable "key_name" {
+  type = string
+  description = "The Key Name Required for Access to the Firewalls/Security Appliance."
+}
+
+variable "user_data" {
+  type = string
+  description = "The User Data to provide the launch template for the AMI deployment of the Firewall/Security Appliance."
+  default = ""
+}
 
 variable "vpc-cidrs" {
   description = "Required : List of CIDRs to apply to the VPC. Only the first CIDR is used for the calculated networks. All other subnets would need to created outside of the module. The first CIDR must have enough /26s to deploy 5 subnets in each availability zone."
