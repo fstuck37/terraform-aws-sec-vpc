@@ -81,20 +81,21 @@ resource "aws_launch_template" "firewall_launch_template" {
       delete_on_termination        = true
       device_index                 = 0
       security_groups              = [aws_security_group.fw-fwt-sg.id]
-      subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-fwt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
+//      subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-fwt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
   }
  
   network_interfaces {
       delete_on_termination        = true
       device_index                 = 1
       security_groups              = [aws_security_group.fw-mgt-sg.id]
-      subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-mgt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
+//      subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-mgt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
   }
 }
 
 resource "aws_autoscaling_group" "firewall_asg" {
   name                 = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-configuration"
-  availability_zones   = data.aws_availability_zones.azs.names
+//  availability_zones   = data.aws_availability_zones.azs.names
+  vpc_zone_identifier  = concat(local.subnet_ids["fwt"],local.subnet_ids["mgt"])
   desired_capacity     = 2
   min_size             = 2
   max_size             = 3
