@@ -1,5 +1,3 @@
-
-
 # Config IAM role with policy
 resource "aws_iam_role" "fw-iam-role" {
   name = "${var.name-vars["account"]}-${var.name-vars["name"]}-fw-iam-role"
@@ -69,7 +67,7 @@ resource "aws_launch_template" "firewall_launch_template" {
   name          = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-template-${replace(each.value,"-", "")}"
   image_id      = var.ami_id
   instance_type = var.instance_type
-  user_data     = "mgmt-interface-swap=enable\nplugin-op-commands=aws-gwlb-inspect:enable\n${var.user_data}"
+  user_data     = base64encode("mgmt-interface-swap=enable\nplugin-op-commands=aws-gwlb-inspect:enable\n${var.user_data}")
   key_name      = var.key_name
 
   iam_instance_profile {
@@ -84,23 +82,14 @@ resource "aws_launch_template" "firewall_launch_template" {
       device_index                 = 0
       security_groups              = [aws_security_group.fw-fwt-sg.id]
       subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-fwt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
-}
+  }
+ 
   network_interfaces {
       delete_on_termination        = true
       device_index                 = 1
       security_groups              = [aws_security_group.fw-mgt-sg.id]
       subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-mgt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
-}
-
-    # for_each = {for sd in local.subnet_data:sd.name=>sd
-    #        if sd.layer == "fwt" }
-    # content {
-    #   delete_on_termination        = true
-    #   device_index                 = aws_subnet.subnets[each.value.index]
-    #   security_groups              = [aws_security_group.fw-fwt-sg.id]
-    #   subnet_id                    = aws_subnet.subnets[each.value.name].id
-    # }
-  
+  }
 }
 
 resource "aws_autoscaling_group" "firewall_asg" {
