@@ -63,8 +63,8 @@ resource "aws_iam_instance_profile" "iam-instance-profile" {
 }
 
 resource "aws_launch_template" "firewall_launch_template" {
-  for_each = toset(data.aws_availability_zones.azs.names)
-  name          = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-template-${replace(each.value,"-", "")}"
+  #for_each = toset(data.aws_availability_zones.azs.names)
+  name          = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-template}"  //-${replace(each.value,"-", "")
   image_id      = var.ami_id
   instance_type = var.instance_type
   user_data     = base64encode("mgmt-interface-swap=enable\nplugin-op-commands=aws-gwlb-inspect:enable\n${var.user_data}")
@@ -73,9 +73,9 @@ resource "aws_launch_template" "firewall_launch_template" {
   iam_instance_profile {
       name = aws_iam_instance_profile.iam-instance-profile.name
     }
-  placement {
-    availability_zone = each.value
-  }
+#  placement {
+#    availability_zone = each.value
+#  }
 
   network_interfaces {
       delete_on_termination        = true
@@ -100,12 +100,12 @@ resource "aws_autoscaling_group" "firewall_asg" {
   min_size             = 2
   max_size             = 3
 
-  dynamic launch_template {
-    for_each = toset(data.aws_availability_zones.azs.names)
-    content {
+//  dynamic launch_template {
+//    for_each = toset(data.aws_availability_zones.azs.names)
+    launch_template {
       id      = aws_launch_template.firewall_launch_template[launch_template.value].id
       version = "$Latest"
     }
-  }
+//  }
 }
 
