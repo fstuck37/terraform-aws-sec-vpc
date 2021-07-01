@@ -96,7 +96,7 @@ resource "aws_launch_template" "firewall_launch_template" {
 resource "aws_autoscaling_group" "firewall_asg" {
   name                 = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-configuration"
 //  availability_zones   = data.aws_availability_zones.azs.names
-  vpc_zone_identifier  = concat(local.subnet_ids["fwt"],local.subnet_ids["mgt"])
+  vpc_zone_identifier  = local.subnet_ids["fwt"]
   desired_capacity     = 2
   min_size             = 2
   max_size             = 3
