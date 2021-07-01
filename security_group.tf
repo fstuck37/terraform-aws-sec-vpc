@@ -28,7 +28,7 @@ resource "aws_security_group" "fw-mgt-sg" {
 
 # Firewall Data Security Group
 resource "aws_security_group" "fw-fwt-sg" {
-  name        = "${var.name-vars["account"]}-${var.name-vars["name"]}-fw-mgt-sg"
+  name        = "${var.name-vars["account"]}-${var.name-vars["name"]}-fw-fwt-sg"
   description = "Allow inbound traffic from GWLB"
     vpc_id      = aws_vpc.main_vpc.id
 
