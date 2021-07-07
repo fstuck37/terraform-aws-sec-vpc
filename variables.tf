@@ -70,7 +70,7 @@ variable "instance_tenancy" {
 variable "subnets" {
   type = list(string)
   description = "Optional : List of subnet identifiers for each of the subnet 5 layers that are required.  Mgt is currently not used."
-  default = ["ngw", "fwt", "tgw", "gwe", "mgt"]
+  default = ["ngw", "fwt", "tgw", "gwe"]
 }
 
 variable "subnet_size" {
@@ -79,8 +79,8 @@ variable "subnet_size" {
 }
 
 variable "max_layers" {
-   description = "Optional : The number of subnet layers to compute the IP allocations for. This must be greater than the existing numnber of layers in subnets. The default is 5"
-   default = 5
+   description = "Optional : The number of subnet layers to compute the IP allocations for. This must be greater than the existing numnber of layers in subnets. The default is 8"
+   default = 8
 }
 
 variable "max_azs" {

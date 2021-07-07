@@ -63,9 +63,7 @@ resource "aws_iam_instance_profile" "iam-instance-profile" {
 }
 
 resource "aws_launch_template" "firewall_launch_template" {
-  #for_each = toset(data.aws_availability_zones.azs.names)
   name          = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-template"
-#-${replace(each.value,"-", "")}
   image_id      = var.ami_id
   instance_type = var.instance_type
   user_data     = base64encode("mgmt-interface-swap=enable\nplugin-op-commands=aws-gwlb-inspect:enable\n${var.user_data}")
@@ -74,39 +72,28 @@ resource "aws_launch_template" "firewall_launch_template" {
   iam_instance_profile {
       name = aws_iam_instance_profile.iam-instance-profile.name
     }
-#  placement {
-#    availability_zone = each.value
-#  }
 
   network_interfaces {
       delete_on_termination        = true
       device_index                 = 0
       security_groups              = [aws_security_group.fw-fwt-sg.id]
-//      subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-fwt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
   }
  
   network_interfaces {
       delete_on_termination        = true
       device_index                 = 1
       security_groups              = [aws_security_group.fw-mgt-sg.id]
-//      subnet_id                    = aws_subnet.subnets[format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-mgt-az-${element(split("-", each.value), length(split("-", each.value )) - 1)}")].id
   }
 }
 
 resource "aws_autoscaling_group" "firewall_asg" {
   name                 = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-configuration"
-//  availability_zones   = data.aws_availability_zones.azs.names
   vpc_zone_identifier  = local.subnet_ids["fwt"]
   desired_capacity     = 2
   min_size             = 2
   max_size             = 3
-
-//  dynamic launch_template {
-//    for_each = toset(data.aws_availability_zones.azs.names)
-    launch_template {
-      id      = aws_launch_template.firewall_launch_template.id
-      version = "$Latest"
-    }
-//  }
+  launch_template {
+    id      = aws_launch_template.firewall_launch_template.id
+    version = "$Latest"
+  }
 }
-

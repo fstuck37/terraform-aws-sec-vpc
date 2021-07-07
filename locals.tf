@@ -18,7 +18,7 @@ locals {
         layer_index  = i
         subnet_index = ii
         layer_cidr = cidrsubnet(var.vpc-cidrs[0] , ceil( log(max(length(var.subnets), var.max_layers),2)) , i )
-        subnet_cidr = cidrsubnet(cidrsubnet(var.vpc-cidrs[0] , ceil( log(max(length(var.subnets), var.max_layers),2)) , i ), (var.subnet_size - (element(split("/", var.vpc-cidrs[0]),1) + ceil(log(max(length(data.aws_availability_zones.azs.names), var.max_azs),2)))) , ii )
+        subnet_cidr = cidrsubnet(   cidrsubnet(var.vpc-cidrs[0] , ceil( log(max(length(var.subnets), var.max_layers),2)) , i )   , (var.subnet_size - (element(split("/", var.vpc-cidrs[0]),1) + ceil(log(max(length(data.aws_availability_zones.azs.names), var.max_azs),2)))) , ii )
        }]
     ])
 
