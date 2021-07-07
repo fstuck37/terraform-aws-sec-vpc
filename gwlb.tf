@@ -33,7 +33,7 @@ resource "aws_lb_target_group" "gwlbtg" {
   health_check {
     enabled = true
     port = 80
-    protocol = "tcp"
+    protocol = "TCP"
     timeout = 5
     unhealthy_threshold = 3
   }
