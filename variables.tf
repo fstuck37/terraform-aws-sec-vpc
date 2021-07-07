@@ -161,3 +161,9 @@ variable "internal_networks" {
   type = list(string)
   default = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 }
+
+
+variable "endpoint_service_allowed_principal" {
+  description = "Optional : List of the ARNs of one or more principals allowed to discover the endpoint service.
+  default = []
+}
