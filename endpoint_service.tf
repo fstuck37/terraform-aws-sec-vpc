@@ -8,7 +8,6 @@ resource "aws_vpc_endpoint_service" "gateway" {
   )
 }
 
-
 resource "aws_vpc_endpoint_service_allowed_principal" "gateway" {
   for_each = toset(var.endpoint_service_allowed_principal)
     vpc_endpoint_service_id = aws_vpc_endpoint_service.gateway.id

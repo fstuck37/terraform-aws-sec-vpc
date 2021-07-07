@@ -164,6 +164,6 @@ variable "internal_networks" {
 
 
 variable "endpoint_service_allowed_principal" {
-  description = "Optional : List of the ARNs of one or more principals allowed to discover the endpoint service.
+  description = "Optional : List of the ARNs of one or more principals allowed to discover the endpoint service."
   default = []
 }
