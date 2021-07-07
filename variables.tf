@@ -69,7 +69,7 @@ variable "instance_tenancy" {
 
 variable "subnets" {
   type = list(string)
-  description = "Optional : List of subnet identifiers for each of the subnet 5 layers that are required."
+  description = "Optional : List of subnet identifiers for each of the subnet 5 layers that are required.  Mgt is currently not used."
   default = ["ngw", "fwt", "tgw", "gwe", "mgt"]
 }
 
@@ -149,4 +149,10 @@ variable "aws_vpc_endpoint_id" {
   type = list(string)
 	description = "Optional : TheList of aws_vpc_endpoint IDs to the Firewall Endpoint"
 	default = []
+}
+
+variable "internal_networks" {
+  description = "Required : List of CIDRs for internal networks.  Traffic in these vps will be routed from Security VPC back to transit gateway"
+  type = list(string)
+  default = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 }
