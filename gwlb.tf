@@ -1,6 +1,5 @@
 resource "aws_lb" "gwlb" {
   name               = format("%s", var.vpc-name == true ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)
-  internal           = true
   load_balancer_type = "gateway"
 
   subnets            = local.subnet_ids["fwt"]
