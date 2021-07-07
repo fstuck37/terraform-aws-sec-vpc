@@ -7,7 +7,7 @@ resource "aws_ec2_managed_prefix_list" "internal_networks" {
   dynamic "entry" {
     for_each    = toset(var.internal_networks)
     content {
-      cidr = each.entry.value
+      cidr = entry.value
     }
   }
 }
