@@ -38,3 +38,17 @@ resource "aws_lb_target_group" "gwlbtg" {
     unhealthy_threshold = 3
   }
 }
+
+resource "aws_lb_listener" "gwlb_listener" {
+  load_balancer_arn = aws_lb.gwlb.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.gwlbtg.arn
+  }
+
+  tags = merge(
+    var.tags,
+    map("Name",format("%s", var.vpc-name == true ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name))
+  )
+}
