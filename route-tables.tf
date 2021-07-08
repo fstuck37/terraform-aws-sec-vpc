@@ -44,19 +44,6 @@ resource "aws_route" "ngw-internal-route" {
   vpc_endpoint_id        = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"tgw","gwe")].id
 }
 
-
-/* Routes for TGW Layer */
-/*
-resource "aws_route" "txgw-routes" {
-  for_each = {for rt in local.tgw_routes:rt.index=>rt}
-  route_table_id         = aws_route_table.routers[each.value.name].id
-  destination_cidr_block = each.value.route
-  transit_gateway_id     = var.transit_gateway_id
-}
-*/
-
-
-
 resource "aws_route" "txgw-routes-ep" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "tgw" }
