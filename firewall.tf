@@ -90,7 +90,7 @@ resource "aws_launch_template" "firewall_launch_template" {
 
     tags = merge(
       var.tags,
-      map("Name",format("${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}")
+      map("Name",format("${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"))
     )
   }
 }
