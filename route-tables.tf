@@ -60,7 +60,6 @@ resource "aws_route" "txgw-routes-ep" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "tgw" }
   route_table_id         = aws_route_table.routers[each.value.name].id
-  destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"tgw","gwe")].id
 }
 
@@ -69,7 +68,6 @@ resource "aws_route" "gwe-default-route" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "gwe" }
   route_table_id         = aws_route_table.routers[each.value.name].id
-  destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"gwe","ngw")].id
 }
 
