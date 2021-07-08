@@ -158,7 +158,7 @@ variable "endpoint_service_allowed_principal" {
 
 variable "autoscaling_group_capacity" {
   description = "Optional :"
-  type = map(int)
+  type = map(number)
   default = {
     autoscaling_group_desired_capacity = 2
     autoscaling_group_min_size         = 2
