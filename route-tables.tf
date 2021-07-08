@@ -39,7 +39,7 @@ resource "aws_route" "ngw-default-route" {
 
 resource "aws_route" "ngw-internal-route" {
   for_each = {for rt in local.tgw_routes:rt.index=>rt}
-  route_table_id         = aws_route_table.routers[each.value.name].id
+  route_table_id         = aws_route_table.routers[replace(each.value.name,"tgw","ngw"].id
   destination_cidr_block = each.value.route
   vpc_endpoint_id        = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"tgw","ngw")].id
 }
