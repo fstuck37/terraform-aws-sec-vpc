@@ -1,18 +1,8 @@
 resource "aws_lb" "gwlb" {
-  name               = format("%s", var.vpc-name == true ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)
-  load_balancer_type = "gateway"
-
-  subnets            = local.subnet_ids["fwt"]
-  enable_deletion_protection = false
-
-/*
-  access_logs {
-    bucket  = aws_s3_bucket.lb_logs.bucket
-    prefix  = "test-lb"
-    enabled = true
-  }
-*/
-
+  name                             = format("%s", var.vpc-name == true ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)
+  load_balancer_type               = "gateway"
+  subnets                          = local.subnet_ids["fwt"]
+  enable_deletion_protection       = false
   enable_cross_zone_load_balancing = true
 
   tags = merge(
@@ -24,14 +14,14 @@ resource "aws_lb" "gwlb" {
 
 resource "aws_lb_target_group" "gwlbtg" {
   name        = format("%s", var.vpc-name == true ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)
-  port        = 6081
-  protocol    = "GENEVE"
-  target_type = "instance"
   vpc_id      = aws_vpc.main_vpc.id
-  
+  protocol    = "GENEVE"
+  port        = 6081
+  target_type = "instance"
+
   health_check {
-    enabled = true
-    port = 80
+    enabled  = true
+    port     = 80
     protocol = "TCP"
   }
 }
