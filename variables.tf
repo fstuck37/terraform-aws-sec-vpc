@@ -163,5 +163,10 @@ variable "autoscaling_group_capacity" {
     autoscaling_group_desired_capacity = 2
     autoscaling_group_min_size         = 2
     autoscaling_group_max_size         = 3
+    scaling_adjustment_up              = 1
+    scaling_adjustment_down            = -1
+    scale_up_cooldown                  = 600
+    scale_down_cooldown                = 600
   }
 }
+

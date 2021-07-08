@@ -102,11 +102,20 @@ resource "aws_autoscaling_group" "firewall_asg" {
   }
 }
 
-
-resource "aws_autoscaling_policy" "firewall_asp" {
-  name                    = "${var.name-vars["account"]}-${var.name-vars["name"]}-asg"
-  scaling_adjustment     = 4
+resource "aws_autoscaling_policy" "firewall_asp_up" {
+  name                    = "${var.name-vars["account"]}-${var.name-vars["name"]}-asp-up"
+  policy_type            = "SimpleScaling"
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
-  autoscaling_group_name = aws_autoscaling_group.bar.name
+  scaling_adjustment     = lookup(var.autoscaling_group_capacity,"scaling_adjustment_up",1)
+  cooldown               = lookup(var.autoscaling_group_capacity,"scale_up_cooldown",600)
+  autoscaling_group_name = aws_autoscaling_group.firewall_asg.name
+}
+
+resource "aws_autoscaling_policy" "firewall_asp_down" {
+  name                    = "${var.name-vars["account"]}-${var.name-vars["name"]}-asp-down"
+  policy_type            = "SimpleScaling"
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = lookup(var.autoscaling_group_capacity,"scaling_adjustment_down",-1)
+  cooldown               = lookup(var.autoscaling_group_capacity,"scale_down_cooldown",600)
+  autoscaling_group_name = aws_autoscaling_group.firewall_asg.name
 }
