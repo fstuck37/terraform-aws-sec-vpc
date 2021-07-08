@@ -89,13 +89,13 @@ resource "aws_launch_template" "firewall_launch_template" {
 resource "aws_autoscaling_group" "firewall_asg" {
   name                 = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-configuration"
   vpc_zone_identifier  = local.subnet_ids["fwt"]
-  desired_capacity     = 2
-  min_size             = 2
-  max_size             = 3
+  desired_capacity     = lookup(var.autoscaling_group_capacity,"autoscaling_group_desired_capacity",3)
+  min_size             = lookup(var.autoscaling_group_capacity,"autoscaling_group_min_size",2)
+  max_size             = lookup(var.autoscaling_group_capacity,"autoscaling_group_max_size",2)
 
   enabled_metrics      = ["GroupDesiredCapacity", "GroupInServiceCapacity", "GroupPendingCapacity", "GroupMinSize", "GroupMaxSize", "GroupInServiceInstances", "GroupPendingInstances", "GroupStandbyInstances", "GroupStandbyCapacity", "GroupTerminatingCapacity", "GroupTerminatingInstances", "GroupTotalCapacity", "GroupTotalInstances"]
   metrics_granularity = "1Minute"
-  
+
   launch_template {
     id      = aws_launch_template.firewall_launch_template.id
     version = "$Latest"

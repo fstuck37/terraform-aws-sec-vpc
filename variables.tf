@@ -113,12 +113,6 @@ variable "transit_gateway_id" {
 	default     = false
 }
 
-variable "transit_gateway_routes" {
-	type = list(string)
-	description = "Optional : specify the networks to route to the Transit Gateway"
-	default     = []
-}
-
 variable "enable_flowlog" {
 	description = "Optional : A boolean flag to enable/disable VPC flowlogs."
 	default     = true
@@ -158,5 +152,16 @@ variable "internal_networks" {
 
 variable "endpoint_service_allowed_principal" {
   description = "Optional : List of the ARNs of one or more principals allowed to discover the endpoint service."
+  type = list(string)
   default = []
+}
+
+variable "autoscaling_group_capacity" {
+  description = "Optional :"
+  type = map(int)
+  default = {
+    autoscaling_group_desired_capacity = 2
+    autoscaling_group_min_size         = 2
+    autoscaling_group_max_size         = 3
+  }
 }
