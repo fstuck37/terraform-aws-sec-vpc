@@ -100,7 +100,7 @@ resource "aws_autoscaling_group" "firewall_asg" {
   vpc_zone_identifier  = local.subnet_ids["fwt"]
   desired_capacity     = lookup(var.autoscaling_group_capacity,"autoscaling_group_desired_capacity",3)
   min_size             = lookup(var.autoscaling_group_capacity,"autoscaling_group_min_size",2)
-  max_size             = lookup(var.autoscaling_group_capacity,"autoscaling_group_max_size",2)
+  max_size             = lookup(var.autoscaling_group_capacity,"autoscaling_group_max_size",length(data.aws_availability_zones.azs.names))
 
   target_group_arns    = [aws_lb_target_group.gwlbtg.arn]
 

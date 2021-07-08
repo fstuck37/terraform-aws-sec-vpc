@@ -157,12 +157,11 @@ variable "endpoint_service_allowed_principal" {
 }
 
 variable "autoscaling_group_capacity" {
-  description = "Optional :"
+  description = "Optional : set various autoscalling paramters. The defaults are autoscaling_group_max_size = number of AZs, autoscaling_group_desired_capacity = 2, autoscaling_group_min_size = 2, scaling_adjustment_up = 1, scaling_adjustment_down = -1, scale_up_cooldown = 600,  scale_down_cooldown = 600"
   type = map(number)
   default = {
     autoscaling_group_desired_capacity = 2
     autoscaling_group_min_size         = 2
-    autoscaling_group_max_size         = 3
     scaling_adjustment_up              = 1
     scaling_adjustment_down            = -1
     scale_up_cooldown                  = 600
@@ -170,3 +169,5 @@ variable "autoscaling_group_capacity" {
   }
 }
 
+
+    
