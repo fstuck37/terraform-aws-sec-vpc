@@ -59,21 +59,11 @@ locals {
       for r in var.internal_networks : {
         name  = rt.tags["Name"]
         route = r
+        subnet_name = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-tgw-az-${element(split("-", az), length(split("-", az )) - 1)}")
         index = "${rt.tags["Name"]}-${r}"
      }
     if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
   ])
-
-  ngw_internal_routes = flatten([
-    for rt in aws_route_table.routers : [
-      for r in var.internal_networks : {
-        name  = rt.tags["Name"]
-        route = r
-        index = "${rt.tags["Name"]}-${r}"
-     }
-    if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
-  ])
-
-
 }
 
+        
