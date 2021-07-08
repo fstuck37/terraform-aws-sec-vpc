@@ -84,6 +84,15 @@ resource "aws_launch_template" "firewall_launch_template" {
       device_index                 = 1
       security_groups              = [aws_security_group.fw-mgt-sg.id]
   }
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = merge(
+      var.tags,
+      map("Name",format("${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}")
+    )
+  }
 }
 
 resource "aws_autoscaling_group" "firewall_asg" {
