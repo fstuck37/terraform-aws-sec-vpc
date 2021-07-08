@@ -87,7 +87,7 @@ resource "aws_launch_template" "firewall_launch_template" {
 }
 
 resource "aws_autoscaling_group" "firewall_asg" {
-  name                 = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-configuration"
+  name                 = "${var.name-vars["account"]}-${var.name-vars["name"]}-asg"
   vpc_zone_identifier  = local.subnet_ids["fwt"]
   desired_capacity     = lookup(var.autoscaling_group_capacity,"autoscaling_group_desired_capacity",3)
   min_size             = lookup(var.autoscaling_group_capacity,"autoscaling_group_min_size",2)
@@ -100,4 +100,13 @@ resource "aws_autoscaling_group" "firewall_asg" {
     id      = aws_launch_template.firewall_launch_template.id
     version = "$Latest"
   }
+}
+
+
+resource "aws_autoscaling_policy" "firewall_asp" {
+  name                    = "${var.name-vars["account"]}-${var.name-vars["name"]}-asg"
+  scaling_adjustment     = 4
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = aws_autoscaling_group.bar.name
 }
