@@ -92,6 +92,10 @@ resource "aws_autoscaling_group" "firewall_asg" {
   desired_capacity     = 2
   min_size             = 2
   max_size             = 3
+
+  enabled_metrics      = ["GroupDesiredCapacity", "GroupInServiceCapacity", "GroupPendingCapacity", "GroupMinSize", "GroupMaxSize", "GroupInServiceInstances", "GroupPendingInstances", "GroupStandbyInstances", "GroupStandbyCapacity", "GroupTerminatingCapacity", "GroupTerminatingInstances", "GroupTotalCapacity", "GroupTotalInstances"]
+  metrics_granularity = "1Minute"
+  
   launch_template {
     id      = aws_launch_template.firewall_launch_template.id
     version = "$Latest"
