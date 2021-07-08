@@ -38,12 +38,12 @@ resource "aws_route" "ngw-default-route" {
 }
 
 resource "aws_route" "ngw-internal-route" {
-  for_each = {for sd in local.subnet_data:sd.name=>sd
-           if sd.layer == "ngw" }
-  route_table_id              = aws_route_table.routers[each.value.name].id
-  destination_prefix_list_id  = aws_ec2_managed_prefix_list.internal_networks.id
-  vpc_endpoint_id             = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"ngw","gwe")].id
+  for_each = {for rt in local.tgw_routes:rt.index=>rt}
+  route_table_id         = aws_route_table.routers[each.value.name].id
+  destination_cidr_block = each.value.route
+  vpc_endpoint_id        = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"tgw","gwe")].id
 }
+
 
 /* Routes for TGW Layer */
 /*
@@ -55,11 +55,13 @@ resource "aws_route" "txgw-routes" {
 }
 */
 
-/* should we pass the endpoints as a list of ids??? */
+
+
 resource "aws_route" "txgw-routes-ep" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "tgw" }
   route_table_id         = aws_route_table.routers[each.value.name].id
+  destination_cidr_block = "0.0.0.0/0"
   vpc_endpoint_id        = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"tgw","gwe")].id
 }
 
@@ -68,6 +70,7 @@ resource "aws_route" "gwe-default-route" {
   for_each = {for sd in local.subnet_data:sd.name=>sd
            if sd.layer == "gwe" }
   route_table_id         = aws_route_table.routers[each.value.name].id
+  destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.natgw[replace(each.value.name,"gwe","ngw")].id
 }
 

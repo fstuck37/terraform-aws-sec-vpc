@@ -56,13 +56,24 @@ locals {
 
   tgw_routes = flatten([
     for rt in aws_route_table.routers : [
-      for r in var.transit_gateway_routes : {
+      for r in var.internal_networks : {
         name  = rt.tags["Name"]
         route = r
         index = "${rt.tags["Name"]}-${r}"
      }
     if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
   ])
+
+  ngw_internal_routes = flatten([
+    for rt in aws_route_table.routers : [
+      for r in var.internal_networks : {
+        name  = rt.tags["Name"]
+        route = r
+        index = "${rt.tags["Name"]}-${r}"
+     }
+    if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
+  ])
+
 
 }
 
