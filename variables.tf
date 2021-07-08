@@ -149,13 +149,6 @@ variable "amazonaws-com" {
 	default = "amazonaws.com"
 }
 
-
-variable "aws_vpc_endpoint_id" {
-  type = list(string)
-	description = "Optional : TheList of aws_vpc_endpoint IDs to the Firewall Endpoint"
-	default = []
-}
-
 variable "internal_networks" {
   description = "Required : List of CIDRs for internal networks.  Traffic in these vps will be routed from Security VPC back to transit gateway"
   type = list(string)
