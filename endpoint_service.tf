@@ -9,12 +9,15 @@ resource "aws_vpc_endpoint_service" "gateway" {
   )
 }
 
-resource "aws_vpc_endpoint" "example" {
+resource "aws_vpc_endpoint" "gateway-ep" {
+  for_each = {for sd in local.subnet_data:sd.name=>sd
+      if sd.layer == "gwe" }
+
   vpc_id            = aws_vpc.main_vpc.id
   service_name      = aws_vpc_endpoint_service.gateway.service_name
   vpc_endpoint_type = "GatewayLoadBalancer"
 
-  subnet_ids        = local.subnet_ids["gwe"]
+  subnet_ids        = [aws_subnet.subnets[each.value.name].id]
 
   tags = merge(
     var.tags,
