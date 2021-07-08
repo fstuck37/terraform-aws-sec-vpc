@@ -42,7 +42,7 @@ resource "aws_route" "ngw-internal-route" {
            if sd.layer == "ngw" }
   route_table_id              = aws_route_table.routers[each.value.name].id
   destination_prefix_list_id  = aws_ec2_managed_prefix_list.internal_networks.id
-  vpc_endpoint_id             = aws_vpc_endpoint.gateway-ep[each.value.name].id
+  vpc_endpoint_id             = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"ngw","gwe")].id
 }
 
 /* Routes for TGW Layer */
@@ -61,7 +61,7 @@ resource "aws_route" "txgw-routes-ep" {
            if sd.layer == "tgw" }
   route_table_id         = aws_route_table.routers[each.value.name].id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id        = aws_vpc_endpoint.gateway-ep[each.value.name].id
+  vpc_endpoint_id        = aws_vpc_endpoint.gateway-ep[replace(each.value.name,"tgw","gwe")].id
 }
 
 /* Routes for GWE Layer */
