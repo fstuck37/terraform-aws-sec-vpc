@@ -59,7 +59,6 @@ locals {
       for r in var.internal_networks : {
         name  = rt.tags["Name"]
         route = r
-        subnet_name = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-tgw-az-${element(split("-", az), length(split("-", az )) - 1)}")
         index = "${rt.tags["Name"]}-${r}"
      }
     if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
