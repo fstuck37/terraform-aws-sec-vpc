@@ -38,6 +38,6 @@ resource "aws_lb_listener" "gwlb_listener" {
 
 resource "aws_autoscaling_attachment" "gwlb-fw" {
   autoscaling_group_name = aws_autoscaling_group.firewall_asg.name
-  elb                    = aws_elb.gwlb.id
+  alb_target_group_arn   = aws_elb.gwlb.id
 }
 
