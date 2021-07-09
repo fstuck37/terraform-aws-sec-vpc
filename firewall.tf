@@ -66,7 +66,7 @@ resource "aws_launch_template" "firewall_launch_template" {
   name          = "${var.name-vars["account"]}-${var.name-vars["name"]}-launch-template"
   image_id      = var.ami_id
   instance_type = var.instance_type
-  user_data     = base64encode("mgmt-interface-swap=enable\nplugin-op-commands=aws-gwlb-inspect:enable\n${var.user_data}")
+  user_data     = base64encode("mgmt-interface-swap=enable\nplugin-op-commands=aws-gwlb-inspect:enable\ntype=dhcp-client\n${var.user_data}")
   key_name      = var.key_name
 
   iam_instance_profile {
